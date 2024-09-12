@@ -23,11 +23,16 @@ export const InlineInfo = styled.div`
   margin-left: 1.25rem;
 `
 
-export const ItemInfo = styled.h1`
+export const ItemInfo = styled.p`
   font-family: ${({ theme }) => theme.font_family.roboto};
   font-size: ${({ theme }) => theme.font_size.text_m};
-  color: ${({ theme }) => theme.colors.base.text};
+  color: ${({ theme }) => theme.colors.base.subtitle};
   margin-bottom: 0.75rem;
+
+  span {
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.base.text};
+  }
 `
 
 export const ContainerColumn = styled.div`

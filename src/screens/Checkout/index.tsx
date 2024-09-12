@@ -31,16 +31,32 @@ import {
   ContainerComplemento,
   ContainerFormDelivery,
 } from "./styles";
+import { useCartContext } from "../../hooks/useCart";
+import { CartItemType } from "../../context/CartContextProvider";
+import { useEffect, useRef } from "react";
 
 export function Checkout() {
   const navigate = useNavigate();
   const page = useLocation();
+  const { itens } = useCartContext();
 
   function handleConfirmOrder() {
     if (page.pathname !== '/checkout/success') {
       navigate('success')
     }
   }
+
+  function calculateOrderValue(itens: CartItemType[]): number {
+    return itens.reduce((acc, curr) => {
+      return acc + (curr.price * curr.quantity);
+    }, 0);
+  }
+
+  const total = useRef(0);
+
+  useEffect(() => {
+    total.current = calculateOrderValue(itens)
+  }, [itens])
 
   return (
     <>
@@ -124,22 +140,23 @@ export function Checkout() {
 
           <CartItensContainer>
 
-            <CartItem />
-            <CartItem />
+            {itens.map(item => (
+              <CartItem coffee={item} />
+            ))}
 
             <InlineTotalInfo>
               <PricesInfo>Total de itens</PricesInfo>
-              <PricesInfo>R$ 29,70</PricesInfo>
+              <PricesInfo>R$ {total.current.toFixed(2)}</PricesInfo>
             </InlineTotalInfo>
 
             <InlineTotalInfo>
               <PricesInfo>Entrega</PricesInfo>
-              <PricesInfo>R$ 3,50</PricesInfo>
+              <PricesInfo>R$ 5,00</PricesInfo>
             </InlineTotalInfo>
 
             <InlineTotalInfo>
               <TotalInfo>Total</TotalInfo>
-              <TotalInfo>R$ 33,20</TotalInfo>
+              <TotalInfo>R$ {(total.current + 5).toFixed(2)}</TotalInfo>
             </InlineTotalInfo>
 
             <ConfirmRequestButton onClick={handleConfirmOrder}>

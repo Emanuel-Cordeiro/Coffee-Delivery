@@ -2,7 +2,7 @@ import { MapPin, Money, Timer } from "@phosphor-icons/react";
 
 import theme from "../../theme";
 
-import DeliveryImg from '../../assets/Illustration.svg'
+import DeliveryImg from '../../assets/DeliveryGuy.svg'
 import { Navbar } from "../../components/Navbar";
 
 import {

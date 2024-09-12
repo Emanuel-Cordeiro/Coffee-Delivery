@@ -116,7 +116,7 @@ export const TextPayment = styled.p`
 
 export const CartItensContainer = styled.div`
   width: 23rem;
-  min-height: 15rem;
+  min-height: 10rem;
   margin-top: 1rem;
   padding: 2.5rem;
   border-radius: 6px 44px 6px 44px;

@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { ShoppingCart } from "@phosphor-icons/react";
+
 import { InputNumber } from "../InputNumber";
+import { useCartContext } from "../../hooks/useCart";
+
 import theme from "../../theme";
 
 import {
@@ -14,8 +18,6 @@ import {
   InlineInfoCoffee,
   CoffeeDescription,
 } from "./styles";
-import { useCartContext } from "../../hooks/useCart";
-import { useState } from "react";
 
 interface CoffeeType {
   id: number;
@@ -25,7 +27,7 @@ interface CoffeeType {
   price: number;
 }
 
-interface CoffeeDataType {
+export interface CoffeeDataType {
   coffee: CoffeeType;
 }
 
@@ -34,7 +36,7 @@ export function CoffeeItem({ coffee }: CoffeeDataType) {
   const [quantity, setQuantity] = useState(1);
 
   function addItem(coffee: CoffeeType) {
-    const newItem = { id: coffee.id, quantity: quantity, price: coffee.price };
+    const newItem = { id: coffee.id, title: coffee.title, quantity: quantity, price: coffee.price };
 
     handleAddItemToCart(newItem);
   }

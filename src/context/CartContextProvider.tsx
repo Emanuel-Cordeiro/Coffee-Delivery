@@ -1,8 +1,9 @@
 import { createContext, useState } from "react";
 
-interface CartItemType {
+export interface CartItemType {
   id: number;
   quantity: number;
+  title: string;
   price: number;
 }
 
@@ -10,36 +11,56 @@ interface ChildrenProps {
   children: React.ReactNode,
 }
 
-interface CartType {
-  cep: string;
-  street: string;
-  number: string;
-  complement: string;
-  district: string;
-  city: string;
-  state: string;
-  paymentMethod: 'credit' | 'debit' | 'cash';
-  cartItens: Array<CartItemType>
-}
+// interface CartType {
+//   cep: string;
+//   street: string;
+//   number: string;
+//   complement: string;
+//   district: string;
+//   city: string;
+//   state: string;
+//   paymentMethod: 'credit' | 'debit' | 'cash';
+//   cartItens: Array<CartItemType>
+// }
 
 interface CartContextType {
   handleAddItemToCart: (newItem: CartItemType) => void;
+  handleRemoveItem: (id: number) => void;
   itens: CartItemType[]
 }
 
 export const CartContext = createContext<CartContextType>({} as CartContextType);
 
 export function CartContextProvider({ children }: ChildrenProps) {
-  const [cart, setCart] = useState<CartType>({} as CartType);
+  // const [cart, setCart] = useState<CartType>({} as CartType);
   const [itens, setItens] = useState<Array<CartItemType>>([]);
 
   function handleAddItemToCart(newItem: CartItemType) {
-    const updatedList = [...itens, newItem];
+    const index = itens.findIndex(item => item.id === newItem.id)
+
+    let updatedList = [];
+
+    if (index === -1) {
+      updatedList = [...itens, newItem];
+
+      setItens(updatedList);
+    } else {
+      updatedList = itens;
+
+      updatedList[index].quantity += newItem.quantity;
+
+      setItens(updatedList);
+    }
+  }
+
+  function handleRemoveItem(id: number) {
+    const updatedList = itens.filter(item => item.id !== id);
+
     setItens(updatedList);
   }
 
   return (
-    <CartContext.Provider value={{ handleAddItemToCart, itens }}>
+    <CartContext.Provider value={{ handleAddItemToCart, handleRemoveItem, itens }}>
       {children}
     </CartContext.Provider>
   )
