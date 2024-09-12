@@ -1,27 +1,9 @@
 import { createContext, useState } from "react";
-
-export interface CartItemType {
-  id: number;
-  quantity: number;
-  title: string;
-  price: number;
-}
+import CartItemType from "../@types/CartItemType";
 
 interface ChildrenProps {
   children: React.ReactNode,
 }
-
-// interface CartType {
-//   cep: string;
-//   street: string;
-//   number: string;
-//   complement: string;
-//   district: string;
-//   city: string;
-//   state: string;
-//   paymentMethod: 'credit' | 'debit' | 'cash';
-//   cartItens: Array<CartItemType>
-// }
 
 interface CartContextType {
   handleAddItemToCart: (newItem: CartItemType) => void;

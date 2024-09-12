@@ -3,8 +3,7 @@ import { Trash } from "@phosphor-icons/react";
 
 import { InputNumber } from "../InputNumber";
 import { useCartContext } from "../../hooks/useCart";
-import { CartItemType } from "../../context/CartContextProvider";
-
+import CartItemType from "../../@types/CartItemType";
 import theme from "../../theme";
 
 import {

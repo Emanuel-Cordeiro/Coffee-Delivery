@@ -27,7 +27,7 @@ interface CoffeeType {
   price: number;
 }
 
-export interface CoffeeDataType {
+interface CoffeeDataType {
   coffee: CoffeeType;
 }
 

@@ -1,9 +1,18 @@
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
+import * as zod from 'zod';
 
 import { Input } from "../../components/Input";
 import { Navbar } from "../../components/Navbar";
 import { CartItem } from "../../components/CartItem";
+
+import { useCartContext } from "../../hooks/useCart";
+
+import OrderType from "../../@types/OrderType";
+import CartItemType from "../../@types/CartItemType";
 
 import theme from "../../theme";
 
@@ -31,13 +40,28 @@ import {
   ContainerComplemento,
   ContainerFormDelivery,
 } from "./styles";
-import { useCartContext } from "../../hooks/useCart";
-import { CartItemType } from "../../context/CartContextProvider";
-import { useEffect, useRef } from "react";
+
+const zodSchema = zod.object({
+  cep: zod.string().regex(/^\d{5}-\d{3}$/),
+  street: zod.string(),
+  number: zod.string(),
+  complement: zod.string().optional(),
+  district: zod.string(),
+  city: zod.string(),
+  state: zod.string().length(2),
+  paymentMethod: zod.enum(['credit', 'debit', 'cash']),
+  cartItens: zod.array(zod.object({
+    id: zod.string(),
+    title: zod.string(),
+    price: zod.number(),
+    quantity: zod.number(),
+  })),
+});
+
 
 export function Checkout() {
-  const navigate = useNavigate();
   const page = useLocation();
+  const navigate = useNavigate();
   const { itens } = useCartContext();
 
   function handleConfirmOrder() {
@@ -56,115 +80,192 @@ export function Checkout() {
 
   useEffect(() => {
     total.current = calculateOrderValue(itens)
-  }, [itens])
+  }, [itens]);
+
+  const { control, handleSubmit } = useForm<OrderType>({
+    resolver: zodResolver(zodSchema)
+  });
 
   return (
     <>
       <Navbar />
-      <CheckoutContainer>
-        <ContainerDelivery>
-          <CheckoutTitle>Complete seu pedido</CheckoutTitle>
-          <ContainerFormDelivery>
-            <InlineInfo>
-              <MapPinLine size={22} color={theme.colors.product.yellow_dark} />
-              <div>
-                <CheckoutLabel>Endereço de Entrega</CheckoutLabel>
-                <CheckoutSubLabel>Informe o endereço onde deseja receber seu pedido</CheckoutSubLabel>
-              </div>
-            </InlineInfo>
+      <form onSubmit={handleSubmit(handleConfirmOrder)}>
+        <CheckoutContainer>
+          <ContainerDelivery>
+            <CheckoutTitle>Complete seu pedido</CheckoutTitle>
 
-            <ContainerMenor>
-              <Input placeholder="CEP" />
-            </ContainerMenor>
+            <ContainerFormDelivery>
+              <InlineInfo>
+                <MapPinLine size={22} color={theme.colors.product.yellow_dark} />
+                <div>
+                  <CheckoutLabel>Endereço de Entrega</CheckoutLabel>
+                  <CheckoutSubLabel>Informe o endereço onde deseja receber seu pedido</CheckoutSubLabel>
+                </div>
+              </InlineInfo>
 
-            <ContainerCoringa>
-              <Input placeholder="Rua" />
-            </ContainerCoringa>
-
-            <InlineInput>
               <ContainerMenor>
-                <Input placeholder="Número" />
+                <Controller
+                  name='cep'
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <Input
+                      value={value}
+                      onChangeText={onChange}
+                      placeholder="CEP"
+                    />
+                  )}
+                />
               </ContainerMenor>
 
-              <ContainerComplemento>
-                <Input placeholder="Complemento" />
-              </ContainerComplemento>
-            </InlineInput>
+              <ContainerCoringa>
+                <Controller
+                  name='street'
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <Input
+                      value={value}
+                      onChangeText={onChange}
+                      placeholder="Rua"
+                    />
+                  )}
+                />
+              </ContainerCoringa>
 
-            <InlineInput>
-              <ContainerMenor>
-                <Input placeholder="Bairro" />
-              </ContainerMenor>
+              <InlineInput>
+                <ContainerMenor>
+                  <Controller
+                    name='number'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="Número"
+                      />
+                    )}
+                  />
+                </ContainerMenor>
 
-              <ContainerCidade>
-                <Input placeholder="Cidade" />
-              </ContainerCidade>
+                <ContainerComplemento>
+                  <Controller
+                    name='complement'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="Complemento"
+                      />
+                    )}
+                  />
+                </ContainerComplemento>
+              </InlineInput>
 
-              <ContainerUF>
-                <Input placeholder="UF" />
-              </ContainerUF>
-            </InlineInput>
-          </ContainerFormDelivery>
+              <InlineInput>
+                <ContainerMenor>
+                  <Controller
+                    name='district'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="Bairro"
+                      />
+                    )}
+                  />
+                </ContainerMenor>
 
-          <ContainerPayment>
-            <InlineInfo>
-              <CurrencyDollar size={22} color={theme.colors.product.purple} />
-              <div>
-                <CheckoutLabel>Pagamento</CheckoutLabel>
-                <CheckoutSubLabel>O pagamento é feito na entrega. Escolha a forma que deseja pagar</CheckoutSubLabel>
-              </div>
-            </InlineInfo>
+                <ContainerCidade>
+                  <Controller
+                    name='city'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="Cidade"
+                      />
+                    )}
+                  />
+                </ContainerCidade>
 
-            <InlineButtons>
-              <ButtonPayment>
-                <CreditCard size={16} color={theme.colors.product.purple} />
-                <TextPayment>CARTÃO DE CRÉDITO</TextPayment>
-              </ButtonPayment>
+                <ContainerUF>
+                  <Controller
+                    name='state'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="UF"
+                      />
+                    )}
+                  />
+                </ContainerUF>
+              </InlineInput>
+            </ContainerFormDelivery>
 
-              <ButtonPayment>
-                <Bank size={16} color={theme.colors.product.purple} />
-                <TextPayment>CARTÃO DE DÉBITO</TextPayment>
-              </ButtonPayment>
+            <ContainerPayment>
+              <InlineInfo>
+                <CurrencyDollar size={22} color={theme.colors.product.purple} />
+                <div>
+                  <CheckoutLabel>Pagamento</CheckoutLabel>
+                  <CheckoutSubLabel>O pagamento é feito na entrega. Escolha a forma que deseja pagar</CheckoutSubLabel>
+                </div>
+              </InlineInfo>
 
-              <ButtonPayment>
-                <Money size={16} color={theme.colors.product.purple} />
-                <TextPayment>DINHEIRO</TextPayment>
-              </ButtonPayment>
-            </InlineButtons>
+              <InlineButtons>
+                <ButtonPayment>
+                  <CreditCard size={16} color={theme.colors.product.purple} />
+                  <TextPayment>CARTÃO DE CRÉDITO</TextPayment>
+                </ButtonPayment>
 
-          </ContainerPayment>
-        </ContainerDelivery>
+                <ButtonPayment>
+                  <Bank size={16} color={theme.colors.product.purple} />
+                  <TextPayment>CARTÃO DE DÉBITO</TextPayment>
+                </ButtonPayment>
 
-        <ContainerDelivery>
-          <CheckoutTitle>Cafés selecionados</CheckoutTitle>
+                <ButtonPayment>
+                  <Money size={16} color={theme.colors.product.purple} />
+                  <TextPayment>DINHEIRO</TextPayment>
+                </ButtonPayment>
+              </InlineButtons>
 
-          <CartItensContainer>
+            </ContainerPayment>
+          </ContainerDelivery>
 
-            {itens.map(item => (
-              <CartItem coffee={item} />
-            ))}
+          <ContainerDelivery>
+            <CheckoutTitle>Cafés selecionados</CheckoutTitle>
 
-            <InlineTotalInfo>
-              <PricesInfo>Total de itens</PricesInfo>
-              <PricesInfo>R$ {total.current.toFixed(2)}</PricesInfo>
-            </InlineTotalInfo>
+            <CartItensContainer>
 
-            <InlineTotalInfo>
-              <PricesInfo>Entrega</PricesInfo>
-              <PricesInfo>R$ 5,00</PricesInfo>
-            </InlineTotalInfo>
+              {itens.map(item => (
+                <CartItem key={item.id} coffee={item} />
+              ))}
 
-            <InlineTotalInfo>
-              <TotalInfo>Total</TotalInfo>
-              <TotalInfo>R$ {(total.current + 5).toFixed(2)}</TotalInfo>
-            </InlineTotalInfo>
+              <InlineTotalInfo>
+                <PricesInfo>Total de itens</PricesInfo>
+                <PricesInfo>R$ {total.current.toFixed(2)}</PricesInfo>
+              </InlineTotalInfo>
 
-            <ConfirmRequestButton onClick={handleConfirmOrder}>
-              CONFIRMAR PEDIDO
-            </ConfirmRequestButton>
-          </CartItensContainer>
-        </ContainerDelivery>
-      </CheckoutContainer>
+              <InlineTotalInfo>
+                <PricesInfo>Entrega</PricesInfo>
+                <PricesInfo>R$ 5,00</PricesInfo>
+              </InlineTotalInfo>
+
+              <InlineTotalInfo>
+                <TotalInfo>Total</TotalInfo>
+                <TotalInfo>R$ {(total.current + 5).toFixed(2)}</TotalInfo>
+              </InlineTotalInfo>
+
+              <ConfirmRequestButton type="submit">
+                CONFIRMAR PEDIDO
+              </ConfirmRequestButton>
+            </CartItensContainer>
+          </ContainerDelivery>
+        </CheckoutContainer>
+      </form>
     </>
   )
 }

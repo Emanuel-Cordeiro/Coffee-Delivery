@@ -19,5 +19,5 @@ export const InputComponent = styled.input`
   background: transparent;
   font-family: ${({ theme }) => theme.font_family.roboto};
   font-size: ${({ theme }) => theme.font_size.text_s};
-  color: ${({ theme }) => theme.colors.base.label};
+  color: ${({ theme }) => theme.colors.base.text};
 `
