@@ -1,7 +1,6 @@
-import { ShoppingCart } from "@phosphor-icons/react"
-import { InputNumber } from "../InputNumber"
-
-import theme from "../../theme"
+import { ShoppingCart } from "@phosphor-icons/react";
+import { InputNumber } from "../InputNumber";
+import theme from "../../theme";
 
 import {
   CartIcon,
@@ -14,15 +13,16 @@ import {
   CoffeePriceTag,
   InlineInfoCoffee,
   CoffeeDescription,
-} from "./styles"
-import { useCartContext } from "../../hooks/useCart"
+} from "./styles";
+import { useCartContext } from "../../hooks/useCart";
+import { useState } from "react";
 
 interface CoffeeType {
-  id: number,
-  category: Array<string>,
-  title: string,
-  description: string,
-  price: number
+  id: number;
+  category: Array<string>;
+  title: string;
+  description: string;
+  price: number;
 }
 
 interface CoffeeDataType {
@@ -31,10 +31,12 @@ interface CoffeeDataType {
 
 export function CoffeeItem({ coffee }: CoffeeDataType) {
   const { handleAddItemToCart } = useCartContext();
+  const [quantity, setQuantity] = useState(1);
 
   function addItem(coffee: CoffeeType) {
-    const newItem = { id: coffee.id, quantity: 1, price: coffee.price }
-    handleAddItemToCart(newItem)
+    const newItem = { id: coffee.id, quantity: quantity, price: coffee.price };
+
+    handleAddItemToCart(newItem);
   }
 
   return (
@@ -42,8 +44,8 @@ export function CoffeeItem({ coffee }: CoffeeDataType) {
       <CoffeeImage src={`/coffee/${coffee.id}.png`} />
 
       <InlineInfo>
-        {coffee.category.map(category => (
-          <CoffeeCategory>{category}</CoffeeCategory>
+        {coffee.category.map((category) => (
+          <CoffeeCategory key={category}>{category}</CoffeeCategory>
         ))}
       </InlineInfo>
 
@@ -54,13 +56,12 @@ export function CoffeeItem({ coffee }: CoffeeDataType) {
         <CoffeePriceTag>R$</CoffeePriceTag>
         <CoffeePrice>{coffee.price.toFixed(2)}</CoffeePrice>
 
-        <InputNumber value={1} />
+        <InputNumber setQty={setQuantity} qty={quantity} />
 
         <CartIcon onClick={() => addItem(coffee)}>
           <ShoppingCart size={20} weight="fill" color={theme.colors.base.white} />
         </CartIcon>
       </InlineInfoCoffee>
-
     </CoffeContainer>
-  )
+  );
 }

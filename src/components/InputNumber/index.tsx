@@ -1,23 +1,21 @@
-import { useState } from "react";
 import { Minus, Plus } from "@phosphor-icons/react";
 import { NumberButton, NumberContainer, NumberInput } from "./styles";
 
 interface InputNumberProps {
-  value: number;
+  setQty: (quantity: number) => void;
+  qty: number;
 }
 
-export function InputNumber({ value }: InputNumberProps) {
-  const [quantity, setQuantity] = useState(value);
-
+export function InputNumber({ setQty, qty }: InputNumberProps) {
   function handleQuantityChange(operation: string) {
-    if (quantity === 0 && operation === 'minus') return;
+    if (qty === 0 && operation === 'minus') return;
 
     if (operation === 'minus') {
-      setQuantity(qty => qty - 1);
+      setQty(qty - 1);
     }
 
     if (operation === 'plus') {
-      setQuantity(qty => qty + 1);
+      setQty(qty + 1);
     }
   }
 
@@ -27,11 +25,11 @@ export function InputNumber({ value }: InputNumberProps) {
         <Minus size={14} weight="bold" />
       </NumberButton>
 
-      <NumberInput value={quantity} />
+      <NumberInput value={qty} readOnly />
 
       <NumberButton onClick={() => handleQuantityChange('plus')}>
         <Plus size={14} weight="bold" />
       </NumberButton>
     </NumberContainer>
-  )
+  );
 }
