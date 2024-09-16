@@ -72,39 +72,50 @@ export function Checkout() {
 
   const deliveryTax = itens.length > 0 ? 5 : 0;
 
+  const { control, handleSubmit, formState: { errors }, setValue, getValues } = useForm<OrderType>({
+    resolver: zodResolver(zodSchema),
+    defaultValues: {
+      cep: '89130-000',
+      street: 'sasa',
+      number: '12',
+      complement: '',
+      district: 'reqr',
+      state: 'sc',
+      paymentMethod: 'credit',
+      cartItens: itens.map(item => ({
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+    }
+  });
+
   function handleConfirmOrder() {
+    const a = getValues('cep')
+    console.log(a)
     if (page.pathname !== '/checkout/success') {
       navigate('success')
     }
-  }
+  };
 
   function calculateOrderValue(itens: CartItemType[]): number {
     return itens.reduce((acc, curr) => {
       return acc + (curr.price * curr.quantity);
     }, 0);
-  }
+  };
 
-  function handleClickPaymentMethod(paymentMethod: string) {
+  function handleClickPaymentMethod(paymentMethod: 'credit' | 'debit' | 'cash') {
     setPaymentMethod(paymentMethod);
-  }
+
+    setValue('paymentMethod', paymentMethod);
+  };
 
   useEffect(() => {
     const calculatedTotal = calculateOrderValue(itens);
+
     setTotal(calculatedTotal);
   }, [itens]);
-  const { control, handleSubmit, formState: { errors } } = useForm<OrderType>({
-    resolver: zodResolver(zodSchema),
-    defaultValues: {
-      cep: '',
-      street: '',
-      number: '',
-      complement: '',
-      district: '',
-      state: '',
-      paymentMethod: 'credit',
-      cartItens: [{}],
-    }
-  });
 
   return (
     <>

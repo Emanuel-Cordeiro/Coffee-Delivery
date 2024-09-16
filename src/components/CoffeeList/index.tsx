@@ -9,7 +9,7 @@ export function CoffeeList() {
 
       <GridCoffeeList>
         {dataCoffeeList.map((coffee) => (
-          <CoffeeItem coffee={coffee} />
+          <CoffeeItem key={coffee.id} coffee={coffee} />
         ))}
       </GridCoffeeList>
     </>
