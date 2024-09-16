@@ -8,7 +8,7 @@ interface InputNumberProps {
 
 export function InputNumber({ setQty, qty }: InputNumberProps) {
   function handleQuantityChange(operation: string) {
-    if (qty === 0 && operation === 'minus') return;
+    if (qty === 1 && operation === 'minus') return;
 
     if (operation === 'minus') {
       setQty(qty - 1);

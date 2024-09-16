@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const InlineInfo = styled.div`
   display: flex;
@@ -39,10 +39,9 @@ export const ContainerDelivery = styled.div`
 
 export const ContainerFormDelivery = styled.div`
   width: 40rem;
-  height: 18rem;
   border-radius: 6px;
   margin-top: 1rem;
-  padding: 2.5rem;
+  padding: 2.5rem 2.5rem 1.125rem;
   background-color: ${({ theme }) => theme.colors.base.card};
 `
 
@@ -85,8 +84,11 @@ export const ContainerPayment = styled.div`
 export const InlineButtons = styled(InlineInfo)`
   gap: 0.75rem;
 `
+interface ButtonPaymentType {
+  isSelected: boolean;
+}
 
-export const ButtonPayment = styled.button`
+export const ButtonPayment = styled.button<ButtonPaymentType>`
   line-height: 160%;
   width: 100%;
   height: 3.1875rem;
@@ -103,6 +105,12 @@ export const ButtonPayment = styled.button`
     transition: 0.5s;
     cursor: pointer;
   }
+
+  ${props => props.isSelected &&
+    css`
+    border: 1px solid ${({ theme }) => theme.colors.product.purple};
+    background-color: ${({ theme }) => theme.colors.product.purple_light};
+  `}
 `
 
 export const TextPayment = styled.p`

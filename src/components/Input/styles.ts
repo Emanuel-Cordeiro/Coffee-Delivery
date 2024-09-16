@@ -21,3 +21,9 @@ export const InputComponent = styled.input`
   font-size: ${({ theme }) => theme.font_size.text_s};
   color: ${({ theme }) => theme.colors.base.text};
 `
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-family: ${({ theme }) => theme.font_family.roboto};
+  font-size: ${({ theme }) => theme.font_size.text_xs};
+`

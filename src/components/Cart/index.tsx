@@ -9,7 +9,9 @@ export function Cart() {
   const { itens } = useCartContext();
 
   function handleCartClick() {
-    if (page.pathname !== '/checkout' && page.pathname !== '/checkout/success') {
+    if (page.pathname !== '/checkout'
+      && page.pathname !== '/checkout/success'
+      && itens.length > 0) {
       navigate('checkout')
     }
   }

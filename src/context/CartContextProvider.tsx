@@ -18,6 +18,8 @@ export function CartContextProvider({ children }: ChildrenProps) {
   const [itens, setItens] = useState<Array<CartItemType>>([]);
 
   function handleAddItemToCart(newItem: CartItemType) {
+    if (newItem.quantity === 0) return;
+
     const index = itens.findIndex(item => item.id === newItem.id)
 
     let updatedList = [];
