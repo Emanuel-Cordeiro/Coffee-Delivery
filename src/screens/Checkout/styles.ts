@@ -7,7 +7,7 @@ export const InlineInfo = styled.div`
 
 export const CheckoutContainer = styled.div`
   display: grid;
-  grid-template-columns: 42rem 31rem;
+  grid-template-columns: 42rem 29rem;
   padding: 2.5rem 12vw;
   justify-content: space-between;
 `
