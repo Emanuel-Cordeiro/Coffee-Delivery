@@ -16,8 +16,27 @@ import {
   ContainerItem,
   ContainerOrderInfo,
 } from "./styles";
+import { useCartContext } from "../../hooks/useCart";
 
 export function Success() {
+  const { order } = useCartContext();
+
+  let paymentMethod = '';
+
+  switch (order.paymentMethod) {
+    case 'credit':
+      paymentMethod = 'Cartão de crédito'
+      break
+    case 'debit':
+      paymentMethod = 'Cartão de débito'
+      break
+    case 'cash':
+      paymentMethod = 'Dinheiro'
+      break
+    default:
+      paymentMethod = ''
+  }
+
   return (
     <>
       <Navbar />
@@ -32,7 +51,7 @@ export function Success() {
                 <MapPin weight="fill" color={theme.colors.base.white} />
               </IconItemText>
               <ItemText>
-                Entrega em <span>Rua João Daniel Martinelli, 102</span> Farrapos - Porto Alegre, RS
+                Entrega em <span>{order.street}, {order.number}</span> {order.district} - {order.city}, {order.state}
               </ItemText>
             </ContainerItem>
 
@@ -59,7 +78,7 @@ export function Success() {
                   Pagamento na entrega
                 </ItemText>
                 <ItemText>
-                  <span>Cartão de Crédito</span>
+                  <span>{paymentMethod}</span>
                 </ItemText>
               </ColumnInfo>
             </ContainerItem>

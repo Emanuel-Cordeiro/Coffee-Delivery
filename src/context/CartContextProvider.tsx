@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import CartItemType from "../@types/CartItemType";
+import OrderType from "../@types/OrderType";
 
 interface ChildrenProps {
   children: React.ReactNode,
@@ -8,14 +9,20 @@ interface ChildrenProps {
 interface CartContextType {
   handleAddItemToCart: (newItem: CartItemType) => void;
   handleRemoveItem: (id: number) => void;
+  handleOrderConfirmation: (order: OrderType) => void;
+  order: OrderType;
   itens: CartItemType[]
 }
 
 export const CartContext = createContext<CartContextType>({} as CartContextType);
 
 export function CartContextProvider({ children }: ChildrenProps) {
-  // const [cart, setCart] = useState<CartType>({} as CartType);
   const [itens, setItens] = useState<Array<CartItemType>>([]);
+  const [order, setOrder] = useState({} as OrderType)
+
+  function handleOrderConfirmation(order: OrderType) {
+    setOrder(order);
+  }
 
   function handleAddItemToCart(newItem: CartItemType) {
     if (newItem.quantity === 0) return;
@@ -44,7 +51,7 @@ export function CartContextProvider({ children }: ChildrenProps) {
   }
 
   return (
-    <CartContext.Provider value={{ handleAddItemToCart, handleRemoveItem, itens }}>
+    <CartContext.Provider value={{ handleAddItemToCart, handleRemoveItem, itens, handleOrderConfirmation, order }}>
       {children}
     </CartContext.Provider>
   )

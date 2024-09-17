@@ -6,8 +6,9 @@ interface IconItemTextProps {
 
 export const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   justify-content: row;
+  padding: 2.5rem 12vw;
 `
 
 export const TitleOrder = styled.h1`

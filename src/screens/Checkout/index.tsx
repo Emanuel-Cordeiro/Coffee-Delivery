@@ -55,7 +55,7 @@ const zodSchema = zod.object({
   state: zod.string().length(2).min(1),
   paymentMethod: zod.enum(['credit', 'debit', 'cash']),
   cartItens: zod.array(zod.object({
-    id: zod.string(),
+    id: zod.number(),
     title: zod.string(),
     price: zod.number(),
     quantity: zod.number(),
@@ -66,7 +66,7 @@ const zodSchema = zod.object({
 export function Checkout() {
   const page = useLocation();
   const navigate = useNavigate();
-  const { itens } = useCartContext();
+  const { itens, handleOrderConfirmation } = useCartContext();
   const [total, setTotal] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('');
 
@@ -92,8 +92,8 @@ export function Checkout() {
   });
 
   function handleConfirmOrder() {
-    const a = getValues('cep')
-    console.log(a)
+    handleOrderConfirmation(getValues());
+
     if (page.pathname !== '/checkout/success') {
       navigate('success')
     }
