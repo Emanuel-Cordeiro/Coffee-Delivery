@@ -18,7 +18,7 @@ Caso queira testar, basta seguir os seguintes passos:
 git clone https://github.com/Emanuel-Cordeiro/Coffee-Delivery
 ```
 
-- Instale as dependências necessárias atra´ves do `npm`:
+- Instale as dependências necessárias através do `npm`:
 
 ```js
 npm install
