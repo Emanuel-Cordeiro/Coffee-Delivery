@@ -75,12 +75,12 @@ export function Checkout() {
   const { control, handleSubmit, formState: { errors }, setValue, getValues } = useForm<OrderType>({
     resolver: zodResolver(zodSchema),
     defaultValues: {
-      cep: '89130-000',
-      street: 'sasa',
-      number: '12',
+      cep: '',
+      street: '',
+      number: '',
       complement: '',
-      district: 'reqr',
-      state: 'sc',
+      district: '',
+      state: '',
       paymentMethod: 'credit',
       cartItens: itens.map(item => ({
         id: item.id,
