@@ -4,7 +4,7 @@ Esse projeto visa simular uma plataforma de vendas on-line para uma cafeteria, o
 
 O projeto foi desenvolvido em React com base no layout Figma da Rocketseat e faz parte de um desafio da trilha de aprendizado do curso ReactJS. 
 
-O link do figma está disponível aqui: https://www.figma.com/community/file/1245817631079079109/coffee-delivery-desafio-react-native
+O link do layout do Figma está disponível aqui: https://www.figma.com/community/file/1245817631079079109/coffee-delivery-desafio-react-native
 
 ![Demonstração do projeto](Demonstration.gif)
 
