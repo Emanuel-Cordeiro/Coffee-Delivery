@@ -1,50 +1,31 @@
-# React + TypeScript + Vite
+# Coffee Delivery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esse projeto visa simular uma plataforma de vendas on-line para uma cafeteria, onde o usuário pode selecionar os itens desejados e realizar o seu pedido. 
 
-Currently, two official plugins are available:
+O projeto foi desenvolvido em React com base no layout Figma da Rocketseat e faz parte de um desafio da trilha de aprendizado do curso ReactJS. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O link do layout do Figma está disponível aqui: https://www.figma.com/community/file/1245817631079079109/coffee-delivery-desafio-react-native
 
-## Expanding the ESLint configuration
+![Demonstração do projeto](Demonstration.gif)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Quer testar?
 
-- Configure the top-level `parserOptions` property like this:
+Caso queira testar, basta seguir os seguintes passos:
 
+- Faça um clone do código para o seu repositório local:
+  
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+git clone https://github.com/Emanuel-Cordeiro/Coffee-Delivery
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Instale as dependências necessárias atra´ves do `npm`:
 
 ```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+npm install
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+- Execute o seguinte comando para validar o projeto no navegador:
+
+```js
+npm run dev
 ```
